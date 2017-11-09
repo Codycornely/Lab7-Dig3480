@@ -6,6 +6,7 @@
 .wall          { background: white;   }
 
 .actor  { position: absolute;  }
+.coin { background: rgb(200, 135, 80); }
 .player { background: rgb(64, 64, 64); }
 
 .game {
