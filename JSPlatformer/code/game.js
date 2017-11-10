@@ -129,7 +129,7 @@ DOMDisplay.prototype.drawActors = function() {
   // Create a new container div for actor dom elements
   var wrap = elt("div");
 
-  var actor = this.actors.forEach(function(actor) {
+this.level.actors.forEach(function (actor) {
     var rect = wrap.appendChild(elt("div",
                                     "actor " + actor.type));
                                     rect.style.width = actor.size.x * scale + "px";
@@ -137,7 +137,7 @@ DOMDisplay.prototype.drawActors = function() {
                                     rect.style.left = actor.pos.x * scale + "px";
                                     rect.style.top = actor.pos.y * scale + "px";
     });
-    return warp;
+    return wrap;
 };
 
 DOMDisplay.prototype.drawFrame = function() {
@@ -193,7 +193,9 @@ Level.prototype.obstacleAt = function(pos, size) {
   for (var y = yStart; y < yEnd; y++) {
     for (var x = xStart; x < xEnd; x++) {
       var fieldType = this.grid[y][x];
-      if (fieldType) return fieldType;
+      if (fieldType) {
+        return fieldType;
+      }
     }
   }
 };
@@ -215,7 +217,7 @@ Level.prototype.animate = function(step, keys) {
   // Ensure each is maximum 100 milliseconds
   while (step > 0) {
     var thisStep = Math.min(step, maxStep);
-    this.actors.forEach(function(actor){
+    this.actors.forEach(function(actor) {
       actor.act(thisStep, this, keys);
     }, this);
    // Do this by looping across the step size, subtracing either the
@@ -283,16 +285,16 @@ Player.prototype.act = function(step, level, keys) {
 
   };
 
-level.prototype.playerTouched = function(type, actor) {
+Level.prototype.playerTouched = function(type, actor) {
   if (type == 'coin') {
     this.actors = this.actors.filter(function(other){
       return other != actor;
     })
-  };
-  else if (type == 'mystery') {
-    this.actors = this.actors.filter(function(other) {
-      return other != actor;
-    })
+    if (type == 'mystery') {
+      this.actors = this.actors.filter(function(other) {
+        return other != actor;
+      })
+    };
   };
 };
 
@@ -365,3 +367,5 @@ function runGame(plans, Display) {
   }
   startLevel(0);
 }
+//as a side note, I keep getting an odd error that keeps me from placing imput. It tells me that Actor.act isn't a function,
+//depsite the code following the example :/ maybe its something I'm not catching, but regardless. I did the rest fine!
