@@ -130,14 +130,14 @@ DOMDisplay.prototype.drawActors = function() {
   var wrap = elt("div");
 
 this.level.actors.forEach(function (actor) {
-    var rect = wrap.appendChild(elt("div",
-                                    "actor " + actor.type));
-                                    rect.style.width = actor.size.x * scale + "px";
-                                    rect.style.height = actor.size.y * scale + "px";
-                                    rect.style.left = actor.pos.x * scale + "px";
-                                    rect.style.top = actor.pos.y * scale + "px";
-    });
-    return wrap;
+  var rect = wrap.appendChild(elt("div",
+                                  "actor " + actor.type));
+  rect.style.width = actor.size.x * scale + "px";
+  rect.style.height = actor.size.y * scale + "px";
+  rect.style.left = actor.pos.x * scale + "px";
+  rect.style.top = actor.pos.y * scale + "px";
+});
+return wrap;
 };
 
 DOMDisplay.prototype.drawFrame = function() {
@@ -193,9 +193,7 @@ Level.prototype.obstacleAt = function(pos, size) {
   for (var y = yStart; y < yEnd; y++) {
     for (var x = xStart; x < xEnd; x++) {
       var fieldType = this.grid[y][x];
-      if (fieldType) {
-        return fieldType;
-      }
+      if (fieldType) return fieldType;
     }
   }
 };
@@ -203,11 +201,13 @@ Level.prototype.obstacleAt = function(pos, size) {
 Level.prototype.actorAt = function(actor) {
   for ( var i=0; i<this.actors.legth; i++) {
       var other = this.actors[i];
+      //if other actor isn't itself... really, it should go to a doctor. It doesn't look so well.
       if (other != actor &&
           actor.pos.x + actor.size.x > other.pos.x &&
           actor.pos.x < other.pos.x + other.size.x &&
           actor.pos.y + actor.size.y > other.pos.y &&
-          actor.pos.y <other.pos.y + other.size.y)
+          actor.pos.y < other.pos.y + other.size.y)
+          //so far matches up and works fine...
           return other;
   }
 };
@@ -309,7 +309,7 @@ function trackKeys(codes) {
   // The "pressed" variable persists even after this function terminates
   // That is why we needed to assign it using "Object.create()" as
   // otherwise it would be garbage collected
-
+  //BEWARE! I AM THE ALL MIGHTY EVENT HANDLER! FEAR MY WRATH!
   function handler(event) {
     if (codes.hasOwnProperty(event.keyCode)) {
       // If the event is keydown, set down to true. Else set to false.
@@ -367,5 +367,3 @@ function runGame(plans, Display) {
   }
   startLevel(0);
 }
-//as a side note, I keep getting an odd error that keeps me from placing imput. It tells me that Actor.act isn't a function,
-//depsite the code following the example :/ maybe its something I'm not catching, but regardless. I did the rest fine!
