@@ -1,6 +1,7 @@
 var actorChars = {
   '@': Player,
-  'o': Coin
+  'o': Coin,
+  'M': Mystery
 }
 
 function Level(plan) {
@@ -49,6 +50,12 @@ function Coin(pos) {
   this.size = new Vector(0.6,0.6);
   this.wobble = Math.random() * Math.PI *2;
 }
+function Mystery(pos) {
+  this.basePos = this.pos = pos.plus(new Vector(0.5,0.2));
+  this.size = new Vector(0.9,0.6);
+  this.wobble = Math.random() * Math.PI *2;
+}
+Mystery.prototype.type= 'mystery'
 Coin.prototype.type = 'coin';
 Player.prototype.type = 'player';
 function Vector(x, y) {
@@ -276,12 +283,17 @@ Player.prototype.act = function(step, level, keys) {
 
   };
 
-level.prototype.playerTouched = functionc(type, actor) {
+level.prototype.playerTouched = function(type, actor) {
   if (type == 'coin') {
     this.actors = this.actors.filter(function(other){
       return other != actor;
     })
-  });
+  };
+  else if (type == 'mystery') {
+    this.actors = this.actors.filter(function(other) {
+      return other != actor;
+    })
+  };
 };
 
 // Arrow key codes for readability
